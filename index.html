@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&display=swap" rel="stylesheet">
+    <title>Icell's 17th Birthday Party</title>
+    <style>
+      html {
+        overflow-x: hidden;
+      }
+      body {
+        width: 100%;
+        overflow: hidden;
+        font-family: "Playfair display", serif;
+        font-weight: 700;
+        /* background-color: black; */
+      }
+      .cinzel {
+        font-family: "Cinzel", serif;
+        font-weight: 500;
+      }
+      /* overlay */
+      #overlay {
+        position: fixed; /* Cover the entire viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("assets/cover/bgcover.avif") no-repeat center center
+          fixed;
+        background-size: cover; /* Make sure the image covers the entire viewport */
+        background-attachment: scroll;
+        z-index: 1031;
+      }
+      #overlay-contents {
+        position: absolute;
+        bottom: 4%; /* Adjust according to your needs */
+        left: 50%;
+        transform: translateX(-50%); /* Centers the content horizontally */
+        text-align: center;
+      }
+
+      .dear-box {
+        width: 80%;
+        padding-top: 28%;
+        background-image: url("assets/cover/cover_1.avif");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+      /* gif */
+      #gif {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("assets/anim2.gif") no-repeat left center fixed;
+        background-size: cover;
+        background-attachment: scroll;
+        z-index: 2;
+        mix-blend-mode: plus-lighter;
+        /* mix-blend-mode: multiply; */
+        /* filter: brightness(50%); */
+      }
+      /* audio */
+      #audioControl {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        cursor: pointer;
+        padding: 8px 12px 10px 12px;
+        background-color: rgb(255, 255, 255, 0.5);
+        color: #fff;
+        border-radius: 5px;
+      }
+      .btn {
+        position: relative;
+        background: #ffffff;
+        border: none; /* Remove the default border */
+        color: black;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        z-index: 1;
+      }
+      .white-text-shadow {
+        text-shadow: 
+            2px 2px 3px white, 
+            -2px -2px 3px white, 
+            2px -2px 3px white, 
+            -2px 2px 3px white,
+            0px 2px 3px white,
+            0px -2px 3px white,
+            2px 0px 3px white,
+            -2px 0px 3px white;
+        }
+      /* .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        background: linear-gradient(90deg, #AD7C25, #E3C478, #BC8F3B);
+        border-radius: 100px;
+        padding: 4px;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+      } */
+
+      /* navbar */
+      .navbar-toggler {
+        border: none;
+      }
+      .navbar-nav a {
+        text-shadow: 2px 2px rgba(50, 50, 50, 0.5);
+      }
+      /* backgrounds */
+      .bg {
+        position: relative;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        width: 100%;
+        padding-top: 184%;
+      }
+      section {
+        position: absolute;
+        width: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+      }
+      /* animation */
+      img.img-fluid {
+        transform: translateY(25px);
+        opacity: 0;
+        transition: transform 1s, opacity 1s;
+      }
+      .main-image {
+        transform: translateY(0) !important;
+        opacity: 1 !important;
+      }
+      .disappear {
+        visibility: hidden;
+      }
+
+      /* countdown mobile */
+      .timer {
+        width: 100%;
+        padding-top: 40%; /* This maintains the aspect ratio */
+        transform: translateX(4%) translateY(-10%);
+      }
+
+      .timer .col-4 {
+        width: 13vw;
+        height: 26vw;
+        padding: 0;
+        transform: translateY(-12vw) translateX(-7.5vw);
+        font-size: large !important;
+        padding-top: 5vw;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
+      .modal {
+        --bs-modal-bg: rgba(0, 0, 0, 0);
+      }
+
+      /* form */
+      .wish-form button {
+        color: #DAB585;
+        cursor: pointer;
+      }
+      .border-secondary {
+        border-color: #fff !important;
+      }
+      .btn-rsvp {
+        color: #DAB585;
+        border: none;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .tw-clip-diamond {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      }
+
+    
+      /* media query */
+      .ds-com {
+        display: none;
+      }
+      .mobile-com {
+        display: block;
+      }
+      @media (min-aspect-ratio: 1/1) {
+        .mobile-com {
+          display: none;
+        }
+        .ds-com {
+          display: block;
+        }
+        /* overlay */
+        #overlay {
+          background: url("assets/desktop/bgcover.avif") no-repeat right center scroll;
+          position: fixed;
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;
+          width: 100%;
+          padding-top: 10%;
+        }
+        #overlay-contents {
+          bottom: 11%;
+          left: 73%;
+        }
+        .dear-box {
+          width: 32%;
+          padding-top: 25%;
+          transform: translateY(14vw);
+        }
+        .bg {
+          padding-top: 57%;
+        }
+        .timer {
+          padding-top: 26%;
+        }
+        /* coundown desktop */
+        .timer .col-4 {
+          width: 6.7vw;
+          height: 13vw;
+          padding-top: 2.8vw;
+        }
+
+        /* page7 */
+        .wish-form label,
+        .wish-form input,
+        .wish-form textarea,
+        .wish-form button,
+        .wish-list {
+          font-size: 16px;
+        }
+        .wish-list {
+          max-height: 20vh;
+        }
+        .invit {
+          transform: rotate(-10deg) !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- @if(session('success'))
+    <script>
+      alert("{{ session('success') }}");
+    </script>
+    @endif -->
+    <!-- <audio id="myAudio" autoplay loop>
+      <source src="assets/bgsoundd.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <div id="audioControl" onclick="toggleAudio()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="1em"
+        viewBox="0 0 640 512"
+      >
+        <path
+          d="M533.6 32.5c-10.3-8.4-25.4-6.8-33.8 3.5s-6.8 25.4 3.5 33.8C557.5 113.8 592 180.8 592 256s-34.5 142.2-88.7 186.3c-10.3 8.4-11.8 23.5-3.5 33.8s23.5 11.8 33.8 3.5C598.5 426.8 640 346.2 640 256s-41.5-170.8-106.4-223.5zM473.1 107c-10.3-8.4-25.4-6.8-33.8 3.5s-6.8 25.4 3.5 33.8C475.3 170.7 496 210.9 496 256s-20.7 85.3-53.2 111.8c-10.3 8.4-11.8 23.5-3.5 33.8s23.5 11.8 33.8 3.5c43.2-35.2 70.9-88.9 70.9-149s-27.7-113.8-70.9-149zm-60.5 74.5c-10.3-8.4-25.4-6.8-33.8 3.5s-6.8 25.4 3.5 33.8C393.1 227.6 400 241 400 256s-6.9 28.4-17.7 37.3c-10.3 8.4-11.8 23.5-3.5 33.8s23.5 11.8 33.8 3.5C434.1 312.9 448 286.1 448 256s-13.9-56.9-35.4-74.5zM159.9 201.9L272 102.3V409.7L159.9 310.1c-4.4-3.9-10.1-6.1-15.9-6.1H56c-4.4 0-8-3.6-8-8V216c0-4.4 3.6-8 8-8h88c5.9 0 11.6-2.2 15.9-6.1zM290.2 32c-7.3 0-14.3 2.7-19.8 7.5L134.9 160H56c-30.9 0-56 25.1-56 56v80c0 30.9 25.1 56 56 56h78.9L270.4 472.5c5.5 4.8 12.5 7.5 19.8 7.5c16.5 0 29.8-13.3 29.8-29.8V61.8C320 45.3 306.7 32 290.2 32z"
+        />
+      </svg>
+    </div>  -->
+    <nav class="navbar navbar-light navbar-expand-lg fixed-top px-3">
+      <a class="navbar-brand" href="#">
+        <img
+          src="assets/slide_1/bg1_1.avif"
+          alt="Illona Logo"
+          width="80"
+          height="45"
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul
+          class="navbar-nav ms-auto navbar-nav-scroll"
+          style="--bs-scroll-height: 120px"
+        >
+          <li class="nav-item px-4">
+            <a class="nav-link text-light" href="#2">Profile</a>
+          </li>
+          <li class="nav-item px-4">
+            <a class="nav-link text-light" href="#3">The Day</a>
+          </li>
+          <li class="nav-item px-4">
+            <a class="nav-link text-light" href="#4">Venue</a>
+          </li>
+          <li class="nav-item px-4">
+            <a class="nav-link text-light" href="#5">Dresscode</a>
+          </li>
+          <li class="nav-item px-4">
+            <a class="nav-link text-light" href="#6">Gallery</a>
+          </li>
+          <li class="nav-item px-4">
+            <a class="nav-link text-light" href="#7">Wishes</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- landing section -->
+    <div
+      class="bg tw-bg-[url('assets/slide_1/bg1.avif')] md:tw-bg-[url('assets/desktop/bg1.avif')]"
+      id="1"
+    >
+    </div>
+    <!-- invitation section  -->
+   <div
+      class="bg tw-bg-[url('assets/slide_2/bg2.avif')] md:tw-pt-[74.5%] md:tw-bg-[url('assets/desktop/bg2.avif')]"
+      id="2"
+    >
+      <section class="tw-text-center tw-top-[20%] md:tw-top-[34%]">
+        <img
+          src="assets/slide_2/bg2_1.avif"
+          alt="invitation title"
+          class="img-fluid img-float tw-pl-[5vw] tw-pr-[0vw] tw-mb-[0vw] md:tw-pl-[0vw] md:tw-pr-[37vw] mobile-com"
+        />
+        <img
+        src="assets/slide_2/bg2_2.avif"
+        alt="invitation title"
+        class="img-fluid img-float tw-pl-[9vw] tw-pr-[9vw] md:tw-pl-[24vw] md:tw-pr-[3vw] md:tw--mt-[30vw] mobile-com"
+        />
+        <img
+        src="assets/desktop/bg2_1.avif"
+        alt="invitation title"
+        class="img-fluid img-float tw-pl-[5vw] tw-pr-[0vw] tw-mb-[0vw] md:tw-pl-[16vw] md:tw-pr-[9vw] ds-com"
+        />
+        <img
+        src="assets/desktop/bg2_2.avif"
+        alt="invitation title"
+        class="img-fluid img-float tw-pl-[9vw] tw-pr-[9vw] md:tw-mt-[2vw] md:tw-pl-[27vw] md:tw-pr-[27vw] ds-com"
+        />  
+      <img
+        src="assets/slide_2/bg2_3.avif"
+        alt="invitation title"
+        class="img-fluid img-float tw-pl-[25vw] tw--mt-[25vw] tw--mr-[24vw] mobile-com"
+      />
+      </section>
+    </div>
+    <!-- dates section -->
+    <div
+      class="bg tw-bg-[url('assets/slide_3/bg3.avif')] md:tw-bg-[url('assets/desktop/bg3.avif')]"
+      id="3"
+    >
+      <section class="tw-text-center tw-top-[0%] md:tw-pl-[0vw] md:tw-pr-[0vw] md:tw-top-[27%]">
+          <img
+            src="assets/slide_3/bg3_1_m.avif"
+            alt="date title"
+            class="img-fluid img-float tw--mt-[31vw] md:tw-pl-[45vw] md:tw-pr-[0vw] md:tw--mr-[3vw]"
+          />
+              <img
+            src="assets/slide_3/bg3_2.avif"
+            alt="date title"
+            class="img-fluid img-float tw--mt-[26vw] tw-pl-[48vw] tw-pr-[10vw] md:tw-pl-[34vw] md:tw-pr-[42vw] md:tw--mt-[64vw]"
+          />
+          <img
+          src="assets/slide_3/bg3_3.avif"
+          alt="date title"
+          class="img-fluid img-float tw-pl-[62vw] tw-pr-[5vw] md:tw-pl-[51vw] md:tw-pr-[31vw] md:tw--mt-[32vw]"
+        />
+          <div class="tw-translate-x-[5.5vw] tw--translate-y-[15vw] md:tw--mt-[3.5vw] md:tw--translate-x-[22.5vw] md:tw--translate-y-[28vw]">
+            <div class="row timer d-flex justify-content-center tw-px-[10vw] md:tw-text-lg">
+              <div
+                class="col-4"
+              >
+                <p id="day" class="tw-text-[7vw] md:tw-text-[4vw]">00</p>
+              </div>
+              <div
+                class="col-4 tw-mx-[9vw] md:tw-mx-[4vw]"
+              >
+                <p id="hrs" class="tw-text-[7vw] md:tw-text-[4vw]">00</p>
+              </div>
+              <div
+                class="col-4"
+              >
+                <p id="min" class="tw-text-[7vw] md:tw-text-[4vw]">00</p>
+              </div>
+            </div>
+          </div>
+      </section>
+    </div>
+    <!-- break -->
+    <div
+      class="bg tw-bg-[url('assets/slide_4/bg4.avif')] md:tw-bg-[url('assets/desktop/bg4.avif')]"
+      id="4"
+    >
+    <section class="tw-text-center tw-top-[33%] md:tw-top-[5%]">
+      <img
+        src="assets/desktop/bg4_1.avif"
+        alt="venue title"
+        class="img-fluid img-float tw-mt-[31vw] tw-pl-[20vw] tw-pr-[3vw] md:tw-mt-[12vw] md:tw-pl-[52vw] md:tw-pr-[7vw] ds-com"
+      /> 
+      <a href="https://maps.app.goo.gl/9Nj3F1ZJi5FJFe8bA">
+        <img
+        src="assets/slide_4/bg4_1.avif"
+        alt="venue title"
+        class="img-fluid img-float tw--ml-[2vw] tw-pl-[0vw] tw-pr-[72vw] md:tw-pl-[0vw] md:tw-pr-[83vw] md:tw--mt-[12vw]"
+      />
+      </a>
+      <img
+        src="assets/slide_4/bg4_2.avif"
+        alt="venue title"
+        class="img-fluid img-float tw-mt-[31vw] tw-pl-[20vw] tw-pr-[3vw] md:tw-px-[4vw]  mobile-com"
+      />  
+    </section>
+  
+    </div>
+    <!-- break -->
+    <div
+      class="bg tw-bg-[url('assets/slide_5/bg5.avif')] md:tw-pt-[56.5%] md:tw-bg-[url('assets/desktop/bg5.avif')]"
+      id="5"
+    >
+      <section
+        class="tw-text-center tw-top-[22%] md:tw-top-[34%] md:tw-px-[5vw]"
+      >
+      <img
+          src="assets/desktop/bg5_1.avif"
+          alt="attire title"
+          class="img-fluid img-float tw-pl-[15vw] tw-pr-[14vw] md:tw-pl-[1vw] md:tw-pr-[11vw] ds-com"
+        />
+        <img
+          src="assets/slide_5/bg5_1.avif"
+          alt="attire title"
+          class="img-fluid img-float tw-pl-[15vw] tw-pr-[14vw] md:tw-pl-[57vw] md:tw-pr-[6vw] mobile-com"
+        />
+          <img
+          src="assets/slide_5/bg5_2.avif"
+          alt="attire color"
+          class="img-fluid img-float tw-mt-[6vw] tw-pl-[19vw] tw-pr-[21vw] md:tw-pl-[62vw] md:tw-pr-[8vw] md:tw-mt-[2.4vw] mobile-com"
+        />
+        <img
+        src="assets/slide_5/bg5_3.avif"
+        alt="attire color"
+        class="img-fluid img-float tw-mt-[4vw] tw-pl-[9vw] tw-pr-[9vw] md:tw-pl-[62vw] md:tw-pr-[8vw] md:tw-mt-[2.4vw] mobile-com"
+      />
+      </section>
+    </div>
+    <!-- break -->
+    <div
+      class="bg tw-bg-[url('assets/slide_6/bg6.avif')] md:tw-pt-[65%] md:tw-bg-[url('assets/desktop/bg6.avif')]"
+      id="6"
+    >
+      <section class="tw-text-center tw-top-[6.5%] md:tw-px-[4vw] md:tw-top-[18%]">
+        <img
+          src="assets/slide_6/bg6_1.avif"
+          alt="attire title"
+          class="img-fluid img-float tw-pl-[24vw] tw-pr-[13vw] tw-mb-[2vw] md:tw--mt-[5vw] md:tw-pl-[20vw] md:tw-pr-[28vw] mobile-com"
+        />
+        <div class="md:tw-grid md:tw-grid-cols-2">
+          <div>
+            <div class="tw-grid tw-grid-cols-2 tw-gap-x-[3vw] tw-pl-[17vw] tw-pr-[8vw] md:tw-mt-[0vw] md:tw-pl-[9vw] md:tw-pr-[6vw]">
+              <img
+                src="assets/slide_6/bg6_2.avif"
+                alt="gallery img 3"
+                class="img-fluid img-float"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+                onclick="act1()"
+              />
+              <img
+                src="assets/slide_6/bg6_3.avif"
+                alt="gallery img 3"
+                class="img-fluid img-float"
+                data-bs-toggle="modal"
+                data-bs-target="#myModal"
+                onclick="act2()"
+              /> 
+          </div>
+          <div class="tw-grid tw-grid-cols-3 tw-gap-x-[4vw] tw-pl-[10vw] tw-pr-[3vw] tw-mt-[3vw] md:tw-gap-x-[3vw] md:tw-mt-[2vw] md:tw-pl-[6vw] md:tw-pr-[4vw]">
+            <img
+              src="assets/slide_6/bg6_4.avif"
+              alt="gallery img 3"
+              class="img-fluid img-float"
+              data-bs-toggle="modal"
+              data-bs-target="#myModal"
+              onclick="act3()"
+            />
+            <img
+              src="assets/slide_6/bg6_5.avif"
+              alt="gallery img 3"
+              class="img-fluid img-float"
+              data-bs-toggle="modal"
+              data-bs-target="#myModal"
+              onclick="act4()"
+            /> 
+            <img
+            src="assets/slide_6/bg6_6.avif"
+            alt="gallery img 3"
+            class="img-fluid img-float"
+            data-bs-toggle="modal"
+            data-bs-target="#myModal"
+            onclick="act5()"
+          /> 
+        </div>
+          </div>
+          <div>
+            <img
+            src="assets/slide_6/bg6_1.avif"
+            alt="attire title"
+            class="img-fluid img-float tw-pl-[24vw] tw-pr-[13vw] tw-mb-[2vw] md:tw-mt-[10vw] md:tw-pl-[4vw] md:tw-pr-[7vw] ds-com"
+          />
+            <img
+            src="assets/slide_6/bg6_7.avif"
+            alt="attire title"
+            class="img-fluid img-float tw-pl-[14vw] tw-pr-[9vw] tw-mt-[2vw] md:tw--mt-[2vw] md:tw-pl-[2vw] md:tw-pr-[2.5vw]"
+          />
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- break -->
+    <div
+      class="bg tw-bg-[url('assets/slide_7/bg7.avif')] tw-pt-[221%] tw-text-[12px] md:tw-bg-[url('assets/desktop/bg7.avif')] md:tw-pt-[90.5%]"
+      id="7"
+    >
+      <section
+        class="tw-text-center tw-top-[4.5%] md:tw-px-[0vw] md:tw-top-[17%]"
+      >
+        <img
+          src="assets/slide_7/bg7_1.avif"
+          alt="invitation"
+          class="img-fluid img-float tw-pl-[18vw] tw-pr-[18vw] tw-mb-[20vw] md:tw-pl-[18vw] md:tw-pr-[18vw] md:tw-mb-[2vw] mobile-com"
+        />
+
+        <div class="tw-px-[15vw] md:tw-px-[0] md:tw-grid md:tw-grid-cols-2">
+          <div class="md:tw-pl-[9vw] md:tw-pr-[4vw] md:tw-mt-[20vw]">
+            <form
+            action="{{ route('guests.wish') }}"
+            method="post"
+            class="wish-form tw-text-slate-50"
+          >
+            <!-- @csrf -->
+            <label for="sender" class="text-center fw-light tw-text-black w-100 tw-text-[4vw] tw-mb-[4px]"
+           
+              >NAMA:</label
+            >
+            <input
+              type="text"
+              name="sender"
+              id="sender"
+              class="w-100 tw-mb-[10px] tw-border-none tw-p-[10px]"
+              style="background: url(assets/slide_7/bg7_3.avif) center no-repeat; background-size: 100% 100%;"
+              required
+            />
+
+            <label for="wish" class="text-center fw-light tw-text-black w-100 tw-text-[4vw] tw-mb-[4px]"
+           
+              >WISH:</label
+            >
+            <textarea
+              name="wish"
+              id="wish"
+              rows="1"
+              class="w-100 tw-mb-[15px] tw-border-none tw-p-[10px]"
+              style="background: url(assets/slide_7/bg7_3.avif) center no-repeat; background-size: 100% 100%;"
+              required
+            ></textarea>
+
+            <button
+              type="submit"
+              class="btn w-100 tw-mb-[20px] tw-border-none tw-p-[10px]"
+              style="background: url(assets/slide_7/bg7_6.avif) center no-repeat; background-size: 100% 100%;"
+            >
+              SUBMIT
+            </button>
+          </form>
+          <div
+            class="tw-h-[36vw] tw-shadow-xl tw-px-[5vw] tw-mt-[5px] md:tw-h-[20vw]"
+            style="color: #ffffff; background: url(assets/slide_7/bg7_5.avif) center no-repeat; background-size: 100% 100%;"
+          >
+            <div class="tw-max-h-[33vw] tw-pt-[2.5vw]  md:tw-pt-[1vw] tw-overflow-y-scroll tw-mb-[3vw] md:tw-max-h-[18vw]">
+          <!-- @foreach($wishes as $wish)
+            <div class="tw-p-[5px] border-bottom border-3 border-secondary md:tw-text-lg">
+              {{ $wish->sender }}<br />
+              {{ $wish->wish }}
+            </div>
+            @endforeach -->
+            <div class="tw-p-[5px] border-3 md:tw-text-lg text-dark" style="border-bottom: 3px solid #000000;">
+              Tabita<br />
+              Happy sweet seventeen friend!
+          </div>
+            <div class="tw-p-[5px] border-3 md:tw-text-lg text-dark" style="border-bottom: 3px solid #000000;">
+              Tabita<br />
+              Happy sweet seventeen friend!
+          </div>
+          <div class="tw-p-[5px] border-3 md:tw-text-lg text-dark" style="border-bottom: 3px solid #000000;">
+            Tabita<br />
+            Happy sweet seventeen friend!
+        </div>
+        <div class="tw-p-[5px] border-3 md:tw-text-lg text-dark" style="border-bottom: 3px solid #000000;">
+          Tabita<br />
+          Happy sweet seventeen friend!
+      </div>
+            </div>
+          </div>
+          </div>
+          <div class="md:tw-px-[5vw]">
+            <img
+            src="assets/slide_7/bg7_1.avif"
+            alt="invitation"
+            class="img-fluid img-float tw-pl-[18vw] tw-pr-[18vw] tw-mb-[20vw] md:tw-pl-[2vw] md:tw-pr-[4vw] md:tw-mt-[16vw] md:tw-mb-[0vw] ds-com"
+          />
+            <p
+            class="mb-1 tw-mt-[20px] tw-text-xl md:tw-text-2xl fw-light md:tw-mt-[1vw] md:tw-pb-[3vw] tw-text-dark md:tw-text-white md:tw-text-[3vw]"
+          >
+            Will you attend?
+          </p>
+          <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw-px-[0vw] md:tw-px-[2vw] tw-mb-[5vw]">
+            <!-- @php
+              $guestName = $guest->name;
+              $hadir = "Icell Sweet Seventeen Birthday Party\nNama (sesuai undangan) : $guestName\nKehadiran : Hadir"
+              $tidakHadir = "Icell Sweet Seventeen Birthday Party\nNama (sesuai undangan) : $guestName\nKehadiran : Tidak Hadir"
+  
+              $encodedHadir = urlencode($hadir);
+              $encodedTidakHadir = urlencode($thidakHadir);
+          @endphp -->
+            <a
+              href="https://api.whatsapp.com/send/?phone=6282331558378&text={{ $encodedHadir }}&type=phone_number&app_absent=0" 
+              target="_blank"
+              type="button"
+              class="btn btn-rsvp shadow md:btn-lg md:tw-py-[1vw] md:tw-text-xl"
+              style="background: url(assets/slide_7/bg7_4.avif) center no-repeat; background-size: 100%;"
+              >YES</a>
+            <a
+              href="https://api.whatsapp.com/send/?phone=6282331558378&text={{ $encodedTidakHadir }}&type=phone_number&app_absent=0" 
+              target="_blank"
+              type="button"
+              class="btn btn-rsvp shadow md:btn-lg md:tw-py-[1vw] md:tw-text-xl"
+              style="background: url(assets/slide_7/bg7_4.avif) center no-repeat; background-size: 100%;"
+              >NO</a>
+          </div>
+          </div>
+        </div>
+      </section>
+      <section class="tw-bottom-[2%] tw-px-[2vw] md:tw-bottom-[2%] md:tw-px-[24vw]">
+        <img
+          src="assets/slide_7/bg7_2.avif"
+          alt="invitation"
+          class="img-fluid img-float px-4 thanks"
+        />
+      </section>
+    </div>
+    <!-- break -->
+    <div
+      class="modal fade"
+      id="myModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="carousel slide" id="carouselExample">
+            <div class="carousel-inner">
+              <div class="carousel-item active px-4" id="act1">
+                <img
+                  src="assets/slide_6/g1.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4" id="act2">
+                <img
+                  src="assets/slide_6/g2.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4" id="act3">
+                <img
+                  src="assets/slide_6/g3.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4" id="act4">
+                <img
+                  src="assets/slide_6/g4.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4" id="act5">
+                <img
+                  src="assets/slide_6/g5.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4">
+                <img
+                  src="assets/slide_6/g6.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4">
+                <img
+                  src="assets/slide_6/g7.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item px-4">
+                <img
+                  src="assets/slide_6/g8.avif"
+                  class="d-block w-100"
+                  alt="..."
+                />
+              </div>
+          </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div id="gif"></div>
+    <div id="overlay" onclick="hideOverlay()">
+      <section
+        id="overlay-contents"
+        class="d-flex flex-column justify-content-center align-items-center"
+      >
+        <div class="tw-bg-[url('assets/cover/bgcover_1.avif')] dear-box tw-translate-y-[5vw] md:tw-translate-y-[11vw]">
+          <p class="tw-translate-y-[-6vw] text-light text-dark tw-text-2xl md:tw-text-3xl md:tw-translate-y-[-9vw]">Tabita</p>
+        </div>
+        <p
+          class="cinzel tw-mb-[2vw] tw-text-white tw-mt-[4vw] tw-text-md tw-px-3 md:tw-text-2xl"
+        >
+          Valid for: 1 person
+        </p>
+        <p
+          class="cinzel mb-0 tw-text-white tw-text-md md:tw-text-2xl"
+        >
+          Please attend according</br>to valid number of guests
+        </p>
+      </section>
+    </div>
+    <script>
+      tailwind.config = {
+        prefix: "tw-",
+        corePlugins: {
+          preflight: false,
+        },
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+      $(window).scroll(function () {
+        // Navbar background color change
+        if ($(window).scrollTop() > 50) {
+          $(".navbar").css("background-color", "rgba(195, 195, 195, 0.5)");
+        } else {
+          $(".navbar").css("background-color", "transparent");
+        }
+
+        // Image Fade-In Animation based on scroll
+        $("img.img-float").each(function () {
+          let top_of_element = $(this).offset().top;
+          let bottom_of_element = top_of_element + $(this).outerHeight();
+          let bottom_of_screen =
+            $(window).scrollTop() + $(window).innerHeight();
+          let top_of_screen = $(window).scrollTop();
+
+          if (
+            bottom_of_screen > top_of_element &&
+            top_of_screen < bottom_of_element
+          ) {
+            if (!$(this).hasClass("animated")) {
+              $(this)
+                .css({
+                  transform: "translateY(0)",
+                  opacity: "1",
+                })
+                .addClass("animated");
+            }
+          } else {
+            $(this).removeClass("animated").css({
+              transform: "translateY(25px)",
+              opacity: "0",
+            });
+          }
+        });
+        $("img.img-slide-left").each(function () {
+          let top_of_element = $(this).offset().top;
+          let bottom_of_element = top_of_element + $(this).outerHeight();
+          let bottom_of_screen =
+            $(window).scrollTop() + $(window).innerHeight();
+          let top_of_screen = $(window).scrollTop();
+
+          if (
+            bottom_of_screen > top_of_element &&
+            top_of_screen < bottom_of_element
+          ) {
+            if (!$(this).hasClass("animated")) {
+              $(this)
+                .css({
+                  transform: "translateX(0)",
+                  opacity: "1",
+                })
+                .addClass("animated");
+            }
+          } else {
+            $(this).removeClass("animated").css({
+              transform: "translateX(100px)",
+              opacity: "0",
+            });
+          }
+        });
+        $("img.img-slide-right").each(function () {
+          let top_of_element = $(this).offset().top;
+          let bottom_of_element = top_of_element + $(this).outerHeight();
+          let bottom_of_screen =
+            $(window).scrollTop() + $(window).innerHeight();
+          let top_of_screen = $(window).scrollTop();
+
+          if (
+            bottom_of_screen > top_of_element &&
+            top_of_screen < bottom_of_element
+          ) {
+            if (!$(this).hasClass("animated")) {
+              $(this)
+                .css({
+                  transform: "translateX(0)",
+                  opacity: "1",
+                })
+                .addClass("animated");
+            }
+          } else {
+            $(this).removeClass("animated").css({
+              transform: "translateX(-100px)",
+              opacity: "0",
+            });
+          }
+        });
+      });
+
+      // Countdown Timer Functionality
+     $(document).ready(function () {
+        let countDownDate = new Date(2025, 4, 10, 18, 0, 0, 0).getTime();
+        let interval = setInterval(function () {
+          let now = new Date().getTime();
+          let distance = countDownDate - now;
+
+          let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          let hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          $("#day").text(String(days).padStart(2, "0"));
+          $("#hrs").text(String(hours).padStart(2, "0"));
+          $("#min").text(String(minutes).padStart(2, "0"));
+          $("#sec").text(String(seconds).padStart(2, "0"));
+
+          if (distance < 0) {
+            clearInterval(interval);
+            $(".countdown-timer").text("EXPIRED");
+          }
+        }, 1000);
+      });
+      function act1() {
+        $(".carousel-item").removeClass("active");
+        $("#act1").addClass("active");
+      }
+      function act2() {
+        $(".carousel-item").removeClass("active");
+        $("#act2").addClass("active");
+      }
+      function act3() {
+        $(".carousel-item").removeClass("active");
+        $("#act3").addClass("active");
+      }
+      function act4() {
+        $(".carousel-item").removeClass("active");
+        $("#act4").addClass("active");
+      }
+      function act5() {
+        $(".carousel-item").removeClass("active");
+        $("#act5").addClass("active");
+      }
+      function act6() {
+        $(".carousel-item").removeClass("active");
+        $("#act6").addClass("active");
+      }
+      function act7() {
+        $(".carousel-item").removeClass("active");
+        $("#act7").addClass("active");
+      }
+      // Audio control functionality
+      let audioElement = document.getElementById("myAudio");
+      let audioControl = document.getElementById("audioControl");
+
+      function hideOverlay() {
+        document.getElementById("overlay").classList.add("d-none");
+        audioElement.play();
+      }
+
+      function toggleAudio() {
+        if (audioElement.paused) {
+          audioElement.play();
+          // You can replace the SVG content here with the play icon
+          audioControl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M533.6 32.5c-10.3-8.4-25.4-6.8-33.8 3.5s-6.8 25.4 3.5 33.8C557.5 113.8 592 180.8 592 256s-34.5 142.2-88.7 186.3c-10.3 8.4-11.8 23.5-3.5 33.8s23.5 11.8 33.8 3.5C598.5 426.8 640 346.2 640 256s-41.5-170.8-106.4-223.5zM473.1 107c-10.3-8.4-25.4-6.8-33.8 3.5s-6.8 25.4 3.5 33.8C475.3 170.7 496 210.9 496 256s-20.7 85.3-53.2 111.8c-10.3 8.4-11.8 23.5-3.5 33.8s23.5 11.8 33.8 3.5c43.2-35.2 70.9-88.9 70.9-149s-27.7-113.8-70.9-149zm-60.5 74.5c-10.3-8.4-25.4-6.8-33.8 3.5s-6.8 25.4 3.5 33.8C393.1 227.6 400 241 400 256s-6.9 28.4-17.7 37.3c-10.3 8.4-11.8 23.5-3.5 33.8s23.5 11.8 33.8 3.5C434.1 312.9 448 286.1 448 256s-13.9-56.9-35.4-74.5zM159.9 201.9L272 102.3V409.7L159.9 310.1c-4.4-3.9-10.1-6.1-15.9-6.1H56c-4.4 0-8-3.6-8-8V216c0-4.4 3.6-8 8-8h88c5.9 0 11.6-2.2 15.9-6.1zM290.2 32c-7.3 0-14.3 2.7-19.8 7.5L134.9 160H56c-30.9 0-56 25.1-56 56v80c0 30.9 25.1 56 56 56h78.9L270.4 472.5c5.5 4.8 12.5 7.5 19.8 7.5c16.5 0 29.8-13.3 29.8-29.8V61.8C320 45.3 306.7 32 290.2 32z"/></svg>`;
+        } else {
+          audioElement.pause();
+          // You can replace the SVG content here with the pause icon
+          audioControl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M301.1 34.8C312.6 40 320 51.4 320 64V448c0 12.6-7.4 24-18.9 29.2s-25 3.1-34.4-5.3L131.8 352H64c-35.3 0-64-28.7-64-64V224c0-35.3 28.7-64 64-64h67.8L266.7 40.1c9.4-8.4 22.9-10.4 34.4-5.3zM425 167l55 55 55-55c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-55 55 55 55c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-55-55-55 55c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l55-55-55-55c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0z"/></svg>`;
+        }
+      }
+    </script>
+  </body>
+</html>
